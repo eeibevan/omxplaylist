@@ -40,7 +40,12 @@ while true; do
             shift;
             ;;
         -s|--start)
-            echo "Start and $2";
+            if [ ! -r $2 ]; then
+                echo "Cannot Open File $2" 1>&2;
+                exit 1;
+            else
+                seek_episode=$2;
+            fi
             shift 2;
             ;;
         --)
@@ -51,7 +56,21 @@ while true; do
 done
 
 for media_file in ${media_files[*]}; do
+
+    # If We Want To Seek To A File
+    # Skip Any File That Does Not Match
+    if [ ! -z $seek_episode ]; then
+        if [ $seek_episode = $media_file ]; then
+            # We Found The File, No Need To Seak Anymore
+            seek_episode='';
+        else
+            continue;
+        fi
+
+    fi
+
     echo $media_file;
+
     omxplayer $audio_options $media_file > /dev/null;
     wait;
 
