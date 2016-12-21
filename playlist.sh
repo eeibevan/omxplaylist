@@ -26,7 +26,7 @@ seek_episode='';
 
 while true; do
     case "$1" in
-        -H|hdmi)
+        -H|--hdmi)
             audio_options='--adev hdmi';
             shift;
             ;;
