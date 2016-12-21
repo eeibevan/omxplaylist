@@ -81,3 +81,6 @@ for media_file in ${media_files[*]}; do
     sleep 2;
 done
 
+# We've Finished Playing The Last File
+rm last.txt;
+
