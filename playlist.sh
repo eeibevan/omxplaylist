@@ -31,7 +31,12 @@ while true; do
             shift;
             ;;
         -r|--resume)
-            echo "Resume";
+            if [ -r 'last.txt' ]; then
+                seek_episode="$(<last.txt)";
+            else
+                echo "Error, Cannot Read Last Episode" 1>&2;
+                exit 1;
+            fi
             shift;
             ;;
         -s|--start)
@@ -65,6 +70,9 @@ for media_file in ${media_files[*]}; do
     fi
 
     echo $media_file;
+
+    # Save Current Episode For Resuming Later
+    echo $media_file > last.txt;
 
     omxplayer $audio_options --blank $media_file > /dev/null;
     wait;
