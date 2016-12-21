@@ -1,4 +1,16 @@
 #!/bin/bash
+# Required To Expand possible_extentions
+shopt -s extglob
+
+# Extentions of Files To Play
+# Seperate With Pipes
+# ex: mp4|avi
+possible_extentions='@(mp4|avi)';
+
+# The Files To Play
+media_files=(*.$possible_extentions);
+
+audio_options='--adev local';
 
 opts=`getopt --quiet --options H,r,s: --long hdmi,resume,start: -- "$@"`
 if [ $? -ne 0 ]; then
@@ -36,5 +48,14 @@ while true; do
             break;
             ;;
     esac
+done
+
+for media_file in ${media_files[*]}; do
+    echo $media_file;
+    omxplayer $audio_options $media_file > /dev/null;
+    wait;
+
+    # Sleeps For A Few Seconds So We Can Exit The Script With ^C
+    sleep 2;
 done
 
