@@ -71,7 +71,7 @@ for media_file in ${media_files[*]}; do
 
     echo $media_file;
 
-    omxplayer $audio_options $media_file > /dev/null;
+    omxplayer $audio_options --blank $media_file > /dev/null;
     wait;
 
     # Sleeps For A Few Seconds So We Can Exit The Script With ^C
