@@ -7,6 +7,15 @@ if [ $? -ne 0 ]; then
 fi
 eval set -- "$opts";
 
+# Stores Working Directory That (Hopefully) Contains The Videos
+# Stored So Script May Be Run From Anywhere
+# Slash Added At The End Because We're Accessing The Contents Of This Dir
+current_dir=$(pwd)"/";
+
+# Episode To Seek To In Playlist
+# Used By Both -r|--resume And -s|--start episodeNumber.ext
+seek_episode='';
+
 
 while true; do
     case "$1" in
