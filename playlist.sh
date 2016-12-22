@@ -8,11 +8,12 @@ shopt -s extglob
 possible_extentions='@(mp4|avi)';
 
 # The Files To Play
+# May Be Overwritten By Options
 media_files=(*.$possible_extentions);
 
 audio_options='--adev local';
 
-opts=`getopt --quiet --options H,r,s: --long hdmi,resume,start: -- "$@"`
+opts=`getopt --quiet --options f:,H,r,s: --long file:,hdmi,resume,start: -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
@@ -23,9 +24,27 @@ eval set -- "$opts";
 # Used By Both -r|--resume And -s|--start episodeNumber.ext
 seek_episode='';
 
+# Read In A Playlist File Into media_files
+read_in_file()
+{
+    # Reset media_files So We Can Overwrite it
+    unset media_files
+    media_files=();
+
+    file=$1;
+    while read line;do
+        # Append To The Array
+        # Space After line To Seperate Elements
+        media_files+=$line' ';
+    done < $file
+}
 
 while true; do
     case "$1" in
+        -f|--file)
+            read_in_file $2;
+            shift 2;
+            ;;
         -H|--hdmi)
             audio_options='--adev hdmi';
             shift;
