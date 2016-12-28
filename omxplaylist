@@ -49,7 +49,7 @@ read_in_file()
     while read line;do
         # Append To The Array
         # Space After line To Seperate Elements
-        media_files+=$line' ';
+        media_files+=("$line");
     done < $file
 }
 
@@ -112,7 +112,7 @@ if [ "$is_reverse_session" = true ]; then
     reverse_media_files;
 fi
 
-for media_file in ${media_files[*]}; do
+for media_file in "${media_files[@]}"; do
 
     # If We Want To Seek To A File
     # Skip Any File That Does Not Match
@@ -133,7 +133,7 @@ for media_file in ${media_files[*]}; do
         echo $media_file > last.txt;
     fi
 
-    omxplayer $audio_options --blank $media_file > /dev/null;
+    omxplayer $audio_options --blank "$media_file" > /dev/null;
     wait;
 
     # Sleeps For A Few Seconds So We Can Exit The Script With ^C
