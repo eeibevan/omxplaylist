@@ -13,7 +13,7 @@ media_files=(*.$possible_extentions);
 
 audio_options='--adev local';
 
-opts=`getopt --quiet --options f:,H,r,s: --long file:,hdmi,resume,start: -- "$@"`
+opts=`getopt --quiet --options f:,H,r,R,s: --long file:,hdmi,resume,reverse,start: -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
@@ -23,6 +23,11 @@ eval set -- "$opts";
 # Episode To Seek To In Playlist
 # Used By Both -r|--resume And -s|--start episodeNumber.ext
 seek_episode='';
+
+# Flag To Reverse media_files Array
+# Used Since Reverse Must Be Processed Last
+# As Other Options May Overwrite The Array
+is_reverse_session=false;
 
 # Read In A Playlist File Into media_files
 read_in_file()
@@ -37,6 +42,15 @@ read_in_file()
         # Space After line To Seperate Elements
         media_files+=$line' ';
     done < $file
+}
+
+reverse_media_files()
+{
+    local reversed_media_files=();
+    for element in ${media_files[@]}; do
+        reversed_media_files=( $element ${reversed_media_files[@]} );
+    done
+    media_files=( ${reversed_media_files[@]} );
 }
 
 while true; do
@@ -58,6 +72,10 @@ while true; do
             fi
             shift;
             ;;
+        -R|--reverse)
+            is_reverse_session=true;
+            shift;
+            ;;
         -s|--start)
             if [ ! -r $2 ]; then
                 echo "Cannot Open File $2" 1>&2;
@@ -73,6 +91,13 @@ while true; do
             ;;
     esac
 done
+
+# Should Be The Final Thing We Do Before Playing
+# Reverse Must Be Processed Last
+# As Other Options May Overwrite The Array
+if [ "$is_reverse_session" = true ]; then
+    reverse_media_files;
+fi
 
 for media_file in ${media_files[*]}; do
 
