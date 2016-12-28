@@ -18,7 +18,7 @@ media_files=(*.$possible_extentions);
 
 audio_options='--adev local';
 
-opts=`getopt --quiet --options f:,H,r,R,s: --long file:,hdmi,resume,reverse,start: -- "$@"`
+opts=`getopt --quiet --options f:,H,n,r,R,s: --long file:,hdmi,no-last-record,resume,reverse,start: -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
@@ -33,6 +33,10 @@ seek_episode='';
 # Used Since Reverse Must Be Processed Last
 # As Other Options May Overwrite The Array
 is_reverse_session=false;
+
+# Flag Specifying Wether We Should Write
+# A Record of The Last File Played Or Not
+is_using_last_record=true;
 
 # Read In A Playlist File Into media_files
 read_in_file()
@@ -66,6 +70,10 @@ while true; do
             ;;
         -H|--hdmi)
             audio_options='--adev hdmi';
+            shift;
+            ;;
+        -n|--no-last-record)
+            is_using_last_record=false;
             shift;
             ;;
         -r|--resume)
@@ -120,8 +128,10 @@ for media_file in ${media_files[*]}; do
 
     echo $media_file;
 
-    # Save Current Episode For Resuming Later
-    echo $media_file > last.txt;
+    if [ "$is_using_last_record" = true ]; then
+        # Save Current Episode For Resuming Later
+        echo $media_file > last.txt;
+    fi
 
     omxplayer $audio_options --blank $media_file > /dev/null;
     wait;
