@@ -2,6 +2,11 @@
 # Required To Expand possible_extentions
 shopt -s extglob
 
+# Globs That Match Nothing Expand To Null Strings
+# So, When No Media Files Match possible_extentions,
+# Then We Get An Empty Array
+shopt -s nullglob
+
 # Extentions of Files To Play
 # Seperate With Pipes
 # ex: mp4|avi
@@ -125,6 +130,7 @@ for media_file in ${media_files[*]}; do
     sleep 2;
 done
 
-# We've Finished Playing The Last File
-rm last.txt;
+if [ -e last.txt ]; then
+    rm last.txt;
+fi
 
