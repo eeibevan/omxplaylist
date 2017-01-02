@@ -23,7 +23,9 @@ You may override this behavor by creating a playlist file.
                              
     -n, --no-last-record     Do not store a record of the last file played (last.txt)
     
-    -H, --hdmi               Sets omxplayer to output audio through HDMI (default is local 3.5mm 'Headphone Jack')
+    -H, --hdmi               Sets omxplayer to output audio through HDMI
+    
+    -L, --local              Sets omxplayer to output audio through the headphone jack
     
     -r, --resume             Resumes playback of the playlist where it was last stopped.
                              Last file is read from last.txt
