@@ -16,7 +16,8 @@ possible_extentions='@(mp4|avi)';
 # May Be Overwritten By Options
 media_files=(*.$possible_extentions);
 
-audio_options='--adev local';
+# Arguments Passed To omxplayer
+player_args=('--blank');
 
 opts=`getopt --quiet --options f:,H,n,r,R,s: --long file:,hdmi,no-last-record,resume,reverse,start: -- "$@"`
 if [ $? -ne 0 ]; then
@@ -69,7 +70,7 @@ while true; do
             shift 2;
             ;;
         -H|--hdmi)
-            audio_options='--adev hdmi';
+            player_args+=('--adev hdmi');
             shift;
             ;;
         -n|--no-last-record)
@@ -133,7 +134,7 @@ for media_file in "${media_files[@]}"; do
         echo $media_file > last.txt;
     fi
 
-    omxplayer $audio_options --blank "$media_file" > /dev/null;
+    omxplayer ${player_args[@]} "$media_file" > /dev/null;
     wait;
 
     # Sleeps For A Few Seconds So We Can Exit The Script With ^C
