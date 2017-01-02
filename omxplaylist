@@ -19,7 +19,7 @@ media_files=(*.$possible_extentions);
 # Arguments Passed To omxplayer
 player_args=('--blank');
 
-opts=`getopt --quiet --options f:,H,n,r,R,s: --long file:,hdmi,no-last-record,resume,reverse,start: -- "$@"`
+opts=`getopt --quiet --options f:,H,L,n,r,R,s: --long file:,hdmi,local,no-last-record,resume,reverse,start: -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
@@ -71,6 +71,10 @@ while true; do
             ;;
         -H|--hdmi)
             player_args+=('--adev hdmi');
+            shift;
+            ;;
+        -L|--local)
+            player_args+=('--adev local');
             shift;
             ;;
         -n|--no-last-record)
