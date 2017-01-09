@@ -12,7 +12,7 @@ Requires omxplayer in order to play the media files. It may already be installed
 
 # DESCRIPTION
 **omxplaylist** is a command-line script that plays media files like a playlist without a GUI.
-By default omxplaylist will play all mp4 or avi files in the current directory.
+By default omxplaylist will play all mp3, mp4, or avi files in the current directory.
 You may override this behavor by creating a playlist file.
 
     omxplaylist [OPTIONS]

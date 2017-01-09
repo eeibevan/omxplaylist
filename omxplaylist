@@ -10,7 +10,7 @@ shopt -s nullglob
 # Extentions of Files To Play
 # Seperate With Pipes
 # ex: mp4|avi
-possible_extentions='@(mp4|avi)';
+possible_extentions='@(mp3|mp4|avi)';
 
 # The Files To Play
 # May Be Overwritten By Options
