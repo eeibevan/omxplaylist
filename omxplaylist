@@ -19,6 +19,20 @@ media_files=(*.$possible_extentions);
 # Arguments Passed To omxplayer
 player_args=('--blank');
 
+# Tests If The Passed In Argument Exists And Is Not A Shell Function
+# Returns 0 If The First Argument Extsts
+# Non-zero Otherwise
+exists()
+{
+    command -v "$1" > /dev/null 2>&1
+}
+
+# omxplayer Is Required For Playing The Media Files
+if ! exists 'omxplayer'; then
+    echo 'Error: omxplayer not found' 1>&2
+    exit 1;
+fi
+
 opts=`getopt --quiet --options f:,H,L,n,r,R,s: --long file:,hdmi,local,no-last-record,resume,reverse,start: -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
