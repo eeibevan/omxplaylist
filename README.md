@@ -33,3 +33,5 @@ You may override this behavor by creating a playlist file.
     -R, --reverse            Plays the playlist backwards
 
     -s, --start MEDIA_FILE   Starts playback on MEDIA_FILE, rather than the beginning
+
+    -S, --silent             Suppresses output

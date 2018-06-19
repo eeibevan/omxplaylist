@@ -33,7 +33,7 @@ if ! exists 'omxplayer'; then
     exit 1;
 fi
 
-opts=`getopt --quiet --options f:,H,L,n,r,R,s: --long file:,hdmi,local,no-last-record,resume,reverse,start: -- "$@"`
+opts=`getopt --quiet --options f:,H,L,n,r,R,s:,S --long file:,hdmi,local,no-last-record,resume,reverse,start:,silent -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
@@ -52,6 +52,9 @@ is_reverse_session=false;
 # Flag Specifying Wether We Should Write
 # A Record of The Last File Played Or Not
 is_using_last_record=true;
+
+# Flag Specifying Weather We Want Output Or Not
+is_using_output=true;
 
 # Read In A Playlist File Into media_files
 read_in_file()
@@ -117,6 +120,10 @@ while true; do
             fi
             shift 2;
             ;;
+        -S|--silent)
+            is_using_output=false;
+            shift;
+            ;;
         --)
             shift;
             break;
@@ -145,7 +152,9 @@ for media_file in "${media_files[@]}"; do
 
     fi
 
-    echo $media_file;
+    if [ "$is_using_output" = true ]; then
+        echo $media_file;
+    fi
 
     if [ "$is_using_last_record" = true ]; then
         # Save Current Episode For Resuming Later
