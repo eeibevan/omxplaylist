@@ -18,6 +18,8 @@ You may override this behavor by creating a playlist file.
     omxplaylist [OPTIONS]
 
 # OPTIONS
+    -d, --delay SECONDS      Delay SECONDS seconds between episodes. Pass 0 for no delay. Default 2
+
     -f, --file FILE          Reads the list of files to play from a file.
                              Each entry the file should be seperated by newlines
                              

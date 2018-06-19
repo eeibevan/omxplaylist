@@ -33,12 +33,17 @@ if ! exists 'omxplayer'; then
     exit 1;
 fi
 
-opts=`getopt --quiet --options f:,H,L,n,r,R,s:,S --long file:,hdmi,local,no-last-record,resume,reverse,start:,silent -- "$@"`
+opts=`getopt --quiet --options d:,f:,H,L,n,r,R,s:,S --long delay:,file:,hdmi,local,no-last-record,resume,reverse,start:,silent -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
 fi
 eval set -- "$opts";
+
+
+# Seconds To Delay In Between Episodes
+# Managed By -d|--delay switch
+delay_secs=2
 
 # Episode To Seek To In Playlist
 # Used By Both -r|--resume And -s|--start episodeNumber.ext
@@ -82,6 +87,21 @@ reverse_media_files()
 
 while true; do
     case "$1" in
+        -d|--delay)
+            # Test if $2 is a number
+            if [ "$2" -eq "$2" 2> /dev/null ]; then
+                if [ "$2" -ge 0 ]; then
+                    delay_secs=$2;
+                else
+                    echo "Please enter a delay greater than or equal to 0" >&2;
+                    exit 1;
+                fi
+            else
+                echo "Error, $2 is not a number" >&2;
+                exit 1;
+            fi
+            shift 2;
+            ;;
         -f|--file)
             read_in_file $2;
             shift 2;
@@ -164,8 +184,7 @@ for media_file in "${media_files[@]}"; do
     omxplayer ${player_args[@]} "$media_file" > /dev/null;
     wait;
 
-    # Sleeps For A Few Seconds So We Can Exit The Script With ^C
-    sleep 2;
+    sleep $delay_secs;
 done
 
 if [ -e last.txt ]; then
