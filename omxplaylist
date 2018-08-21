@@ -162,8 +162,8 @@ for media_file in "${media_files[@]}"; do
 
     # If We Want To Seek To A File
     # Skip Any File That Does Not Match
-    if [ ! -z $seek_episode ]; then
-        if [ $seek_episode = $media_file ]; then
+    if [ ! -z "$seek_episode" ]; then
+        if [ "$seek_episode" = "$media_file" ]; then
             # We Found The File, No Need To Seak Anymore
             seek_episode='';
         else
