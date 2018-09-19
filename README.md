@@ -34,6 +34,8 @@ You may override this behavior by creating a playlist file.
 
     -R, --reverse            Plays the playlist backwards
 
+    --shuffle                Shuffle media files
+
     -s, --start MEDIA_FILE   Starts playback on MEDIA_FILE, rather than the beginning
 
     -S, --silent             Suppresses output
