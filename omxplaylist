@@ -206,7 +206,7 @@ for media_file in "${media_files[@]}"; do
     sleep $delay_secs;
 done
 
-if [ -e last.txt ]; then
+if [ "$is_using_last_record" = true ] && [ -f last.txt ]; then
     rm last.txt;
 fi
 
