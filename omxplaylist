@@ -163,7 +163,11 @@ done
 
 # Make sure we have all the media files before shuffling
 if [ "$is_shuffle_session" = true ]; then
+    old_ifs=$IFS
+    IFS=$'\n';
     media_files=( $(shuf -e "${media_files[@]}") );
+    IFS=$old_ifs;
+    unset old_ifs;
 fi
 
 # Should Be The Final Thing We Do Before Playing
