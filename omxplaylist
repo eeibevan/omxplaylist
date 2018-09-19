@@ -1,20 +1,20 @@
 #!/bin/bash
-# Required To Expand possible_extentions
+# Required To Expand possible_extensions
 shopt -s extglob
 
 # Globs That Match Nothing Expand To Null Strings
-# So, When No Media Files Match possible_extentions,
+# So, When No Media Files Match possible_extensions,
 # Then We Get An Empty Array
 shopt -s nullglob
 
-# Extentions of Files To Play
-# Seperate With Pipes
+# Extensions of Files To Play
+# Separate With Pipes
 # ex: mp4|avi
-possible_extentions='@(mp3|mp4|avi)';
+possible_extensions='@(mp3|mp4|avi)';
 
 # The Files To Play
 # May Be Overwritten By Options
-media_files=(*.$possible_extentions);
+media_files=(*.$possible_extensions);
 
 # Arguments Passed To omxplayer
 player_args=('--blank');
@@ -77,7 +77,7 @@ read_in_file()
     file=$1;
     while read line;do
         # Append To The Array
-        # Space After line To Seperate Elements
+        # Space After line To Separate Elements
         media_files+=("$line");
     done < $file
 }
@@ -179,7 +179,7 @@ for media_file in "${media_files[@]}"; do
     # Skip Any File That Does Not Match
     if [ ! -z "$seek_episode" ]; then
         if [ "$seek_episode" = "$media_file" ]; then
-            # We Found The File, No Need To Seak Anymore
+            # We Found The File, No Need To Seek Anymore
             seek_episode='';
         else
             continue;

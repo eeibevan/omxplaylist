@@ -21,7 +21,7 @@ You may override this behavior by creating a playlist file.
     -d, --delay SECONDS      Delay SECONDS seconds between episodes. Pass 0 for no delay. Default 2
 
     -f, --file FILE          Reads the list of files to play from a file.
-                             Each entry the file should be seperated by newlines
+                             Each entry the file should be separated by newlines
                              
     -n, --no-last-record     Do not store a record of the last file played (last.txt)
     
