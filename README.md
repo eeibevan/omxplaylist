@@ -2,8 +2,7 @@
 A simple shell script for playing media files in sequential order with omxplayer.
 
 # INSTALLATION
-    sudo wget 'https://raw.githubusercontent.com/eeibevan/omxplaylist/master/omxplaylist' \
-      -O /usr/local/bin/omxplaylist
+    sudo wget 'https://raw.githubusercontent.com/eeibevan/omxplaylist/master/omxplaylist' -O /usr/local/bin/omxplaylist
     sudo chmod +x /usr/local/bin/omxplaylist
 Requires omxplayer in order to play the media files. It may already be installed, but if it is not, it may be installed this way
 
