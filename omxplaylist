@@ -85,10 +85,10 @@ read_in_file()
 reverse_media_files()
 {
     local reversed_media_files=();
-    for element in ${media_files[@]}; do
-        reversed_media_files=( $element ${reversed_media_files[@]} );
+    for element in "${media_files[@]}"; do
+        reversed_media_files=( "$element" "${reversed_media_files[@]}" );
     done
-    media_files=( ${reversed_media_files[@]} );
+    media_files=( "${reversed_media_files[@]}" );
 }
 
 while true; do
