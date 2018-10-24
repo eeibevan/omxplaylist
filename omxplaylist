@@ -20,7 +20,7 @@ media_files=(*.$possible_extensions);
 player_args=('--blank');
 
 # Tests If The Passed In Argument Exists And Is Not A Shell Function
-# Returns 0 If The First Argument Extsts
+# Returns 0 If The First Argument Exists
 # Non-zero Otherwise
 exists()
 {
