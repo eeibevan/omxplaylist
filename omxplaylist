@@ -33,13 +33,15 @@ if ! exists 'omxplayer'; then
     exit 1;
 fi
 
-opts=`getopt --quiet --options d:,f:,H,L,n,r,R,s:,S --long delay:,file:,hdmi,local,no-last-record,resume,reverse,shuffle,start:,silent -- "$@"`
+opts=`getopt --quiet --options d:,f:,H,l,L,n,r,R,s:,S --long delay:,file:,hdmi,loop,local,no-last-record,resume,reverse,shuffle,start:,silent -- "$@"`
 if [ $? -ne 0 ]; then
     echo "Error: Bad Argument" 1>&2;
     exit 1;
 fi
 eval set -- "$opts";
 
+# Flag to repeatedly walk through media_files
+loop=false;
 
 # Seconds To Delay In Between Episodes
 # Managed By -d|--delay switch
@@ -116,6 +118,10 @@ while true; do
             player_args+=('--adev hdmi');
             shift;
             ;;
+        -l|--loop)
+            loop=true;
+            shift;
+            ;;
         -L|--local)
             player_args+=('--adev local');
             shift;
@@ -177,33 +183,44 @@ if [ "$is_reverse_session" = true ]; then
     reverse_media_files;
 fi
 
-for media_file in "${media_files[@]}"; do
 
-    # If We Want To Seek To A File
-    # Skip Any File That Does Not Match
-    if [ ! -z "$seek_episode" ]; then
-        if [ "$seek_episode" = "$media_file" ]; then
-            # We Found The File, No Need To Seek Anymore
-            seek_episode='';
-        else
-            continue;
+# Flag to indicate we should continue playing
+play=true;
+
+while [ "$play" = "true" ]; do
+    for media_file in "${media_files[@]}"; do
+
+        # If We Want To Seek To A File
+        # Skip Any File That Does Not Match
+        if [ ! -z "$seek_episode" ]; then
+            if [ "$seek_episode" = "$media_file" ]; then
+                # We Found The File, No Need To Seek Anymore
+                seek_episode='';
+            else
+                continue;
+            fi
+
         fi
 
+        if [ "$is_using_output" = true ]; then
+            echo $media_file;
+        fi
+
+        if [ "$is_using_last_record" = true ]; then
+            # Save Current Episode For Resuming Later
+            echo $media_file > last.txt;
+        fi
+
+        omxplayer ${player_args[@]} "$media_file" > /dev/null;
+        wait;
+
+        sleep $delay_secs;
+    done
+
+    if [ "$loop" = false ]; then
+        play=false;
     fi
 
-    if [ "$is_using_output" = true ]; then
-        echo $media_file;
-    fi
-
-    if [ "$is_using_last_record" = true ]; then
-        # Save Current Episode For Resuming Later
-        echo $media_file > last.txt;
-    fi
-
-    omxplayer ${player_args[@]} "$media_file" > /dev/null;
-    wait;
-
-    sleep $delay_secs;
 done
 
 if [ "$is_using_last_record" = true ] && [ -f last.txt ]; then

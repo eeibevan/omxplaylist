@@ -28,6 +28,8 @@ You may override this behavior by creating a playlist file.
     
     -L, --local              Sets omxplayer to output audio through the headphone jack
     
+    -l, --loop               Continuously loop through the media files
+    
     -r, --resume             Resumes playback of the playlist where it was last stopped.
                              Last file is read from last.txt
 
